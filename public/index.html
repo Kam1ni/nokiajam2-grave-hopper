@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Grave hopper</title>
+	<!--
+		<link rel="shortcut icon" href="./assets/textures/logo.png" type="image/x-icon">
+	-->
+		<link rel="stylesheet" href="./style.css">
+	<link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+</head>
+<body>
+	<div id="game-container">
+		<div id="canvas-container">
+
+		</div>
+	</div>
+
+
+	<script type="text/javascript">
+		let baseTag = document.createElement("base");
+		let url = location.pathname;
+		if (url.match(/index\.html$/)){
+			url = url.substr(0, url.length - "index.html".length);
+		}
+		baseTag.baseURI = location.origin + url;
+		document.head.append(baseTag);
+	</script>
+
+	<script src="./index.js"></script>
+</body>
+</html>

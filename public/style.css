@@ -1,0 +1,11 @@
+html, body {
+	margin:0;
+	padding:0;
+}
+
+#canvas-container {
+	margin:0px;
+	display: inline-block;
+	transform-origin: top left;
+	transform: scale(8, 8);
+}
