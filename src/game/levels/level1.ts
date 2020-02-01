@@ -8,6 +8,7 @@ export class Level1 extends Level {
 	public exit: Vector2 = new Vector2(9, 1);
 
 	public buildLevel(): void {
-		this.addTile(new TileBox(this.engine, 10, 1, 0, 0))
+		this.addTile(new TileBox(this.engine, 3, 1, 0, 0))
+		this.addTile(new TileBox(this.engine, 3, 1, 7, 0))
 	}
 }
