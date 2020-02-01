@@ -1,10 +1,11 @@
 import { Engine, Sprite, Vector2, Keys, approach, BoundingBox } from "scrapy-engine";
 
-const MAX_SPEED = .5;
+const MAX_SPEED = 50;
+const VERTICAL_SPEED = 150;
 
 export class Player extends Sprite {
 	public velocity:Vector2 = new Vector2(0,0);
-	private touchedTheGround:boolean = true;
+	public touchedTheGround:boolean = true;
 	public hitbox:BoundingBox;
 
 
@@ -19,7 +20,7 @@ export class Player extends Sprite {
 	}
 
 	public update(dt:number){
-		let acc = dt/5;
+		let acc = dt;
 		if (this.engine.input.isKeyDown(Keys.D)){
 			this.velocity.x = approach(this.velocity.x, MAX_SPEED, acc)
 		}else if (this.engine.input.isKeyDown(Keys.A)){
@@ -28,8 +29,15 @@ export class Player extends Sprite {
 			this.velocity.x = approach(this.velocity.x, 0, acc);
 		}
 
+		if (this.touchedTheGround && this.engine.input.isKeyPressed(Keys.W)){
+			this.velocity.y = VERTICAL_SPEED;
+			this.touchedTheGround = false;
+		}else{
+			this.velocity.y = approach(this.velocity.y, -VERTICAL_SPEED, dt);
+		}
 
-		this.transform.position.x += this.velocity.x;
+		this.transform.position.x += this.velocity.x * (dt / 1000);
+		this.transform.position.y += this.velocity.y * (dt / 1000);
 
 		super.update(dt);
 	}

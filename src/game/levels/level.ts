@@ -1,14 +1,22 @@
-import { GameWorld, Vector2, Engine, Vector3 } from "scrapy-engine";
+import { GameWorld, Vector2, Engine, Vector3, SimObject } from "scrapy-engine";
 import { Player } from "../entities/player";
+import { Tile } from "../entities/tile";
 
 export abstract class Level extends GameWorld{
 	public abstract entry:Vector2;
 	public abstract exit:Vector2;
 
-	public abstract buildLevel():void;
+	protected abstract buildLevel():void;
 	public player:Player;
 
 	private ready:boolean = false;
+
+	private tiles:Tile[] = [];
+
+	protected addTile(tile:Tile){
+		this.tiles.push(tile);
+		this.addChild(tile);
+	}
 
 	private setPlayer():void{
 		this.player = new Player(this.engine);
@@ -23,7 +31,14 @@ export abstract class Level extends GameWorld{
 			this.setPlayer();
 			this.ready = true;
 		}
-
+		
 		super.update(dt);
+
+		for (let tile of this.tiles){
+			let collision = this.player.hitbox.isTouching(tile.hitbox);
+			if (collision){
+				tile.onPlayerCollision(this.player, collision);
+			}
+		}
 	}
 }

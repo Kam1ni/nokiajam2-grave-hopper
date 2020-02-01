@@ -2,7 +2,7 @@ import { SimObject, AnimatedSprite, Engine, BoundingBox, Color } from "scrapy-en
 import { Tile } from "./tile";
 import { tilePosToEntityPosInt } from "@/utils/position";
 
-export class TileBox extends SimObject {
+export class TileBox extends Tile {
 	private tiles:AnimatedSprite[] = [];
 	public hitbox:BoundingBox;
 
@@ -10,7 +10,8 @@ export class TileBox extends SimObject {
 		super(engine);
 		for (let x = 0; x < width; x++){
 			for (let y = 0; y < height; y++){
-				let tile = new Tile(engine);
+				let tile = new AnimatedSprite(this.engine, "tiles.png", 4, 4);
+				tile.setRenderedLocation(1,0);
 				tile.transform.position.x = tilePosToEntityPosInt(x);
 				tile.transform.position.y = tilePosToEntityPosInt(y);
 				this.tiles.push(tile);
