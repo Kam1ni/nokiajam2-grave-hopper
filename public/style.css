@@ -3,6 +3,10 @@ html, body {
 	padding:0;
 }
 
+* {
+	image-rendering: pixelated;
+}
+
 #canvas-container {
 	margin:0px;
 	display: inline-block;
