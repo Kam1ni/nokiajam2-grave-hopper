@@ -3,9 +3,8 @@ import { Tile } from "./tile";
 import { tilePosToEntityPosInt } from "@/utils/position";
 
 export class TileBox extends Tile {
-	private tiles:AnimatedSprite[] = [];
+	protected tiles:AnimatedSprite[] = [];
 	public hitbox:BoundingBox;
-
 
 	public constructor(engine:Engine, width:number, height:number, posX:number = 0, posY:number = 0){
 		super(engine);

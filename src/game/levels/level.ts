@@ -49,7 +49,29 @@ export abstract class Level extends GameWorld{
 			this.resetPlayer();
 		}
 
+		for (let tombstone of this.tombStones){
+			if (!tombstone.getIsActive()){
+				return;
+			}
+			for (let tile of this.tiles){
+				if (tile == tombstone) {
+					continue;
+				}
+				if (!tile.getIsActive()){
+					continue;
+				}
+				let collision = tombstone.hitbox.isTouching(tile.hitbox);
+				if (!collision){
+					continue;
+				}
+				tile.onTombstoneCollision(tombstone, collision);
+			}
+		}
+
 		for (let tile of this.tiles){
+			if (!tile.getIsActive()){
+				continue;
+			}
 			let collision = this.player.hitbox.isTouching(tile.hitbox);
 			if (collision){
 				tile.onPlayerCollision(this.player, collision);
@@ -76,12 +98,25 @@ export abstract class Level extends GameWorld{
 
 	private removeTombstone(tombstone:TombStone){
 		let i = this.tombStones.indexOf(tombstone);
-		for (let c = this.tiles.length -1; c <= 0; c--){
+		for (let c = this.tiles.length -1; c >= 0; c--){
 			if (tombstone == this.tiles[c]){
 				this.tiles.splice(c, 1);
 			}
 		}
 		this.tombStones.splice(i, 1);
 		this.removeChild(tombstone);
+	}
+
+	public clearTombstones():void {
+		for (let i = this.tombStones.length - 1; i >= 0; i--){
+			let tombstone = this.tombStones[i];
+			for (let c = this.tiles.length -1; c >= 0; c--){
+				if (tombstone == this.tiles[c]){
+					this.tiles.splice(c, 1);
+				}
+			}
+			this.tombStones.splice(i, 1);
+			this.removeChild(tombstone);
+		}
 	}
 }
