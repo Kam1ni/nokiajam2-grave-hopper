@@ -1,8 +1,16 @@
-import { SimObject, BoundingBox, Vector3 } from "scrapy-engine";
+import { SimObject, BoundingBox, Vector3, Engine, Color } from "scrapy-engine";
 import { Player } from "./player";
 
 export abstract class Tile extends SimObject {
 	public hitbox:BoundingBox;
+
+	
+	public constructor(engine:Engine){
+		super(engine)
+		this.hitbox = new BoundingBox(engine);
+		this.hitbox.color = Color.blue();
+		this.addChild(this.hitbox);
+	}
 
 	public onPlayerCollision(player:Player, collision:Vector3){
 		if (Math.abs(collision.y) < Math.abs(collision.x)) {

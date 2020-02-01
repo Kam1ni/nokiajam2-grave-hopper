@@ -1,4 +1,5 @@
 import { Engine, Sprite, Vector2, Keys, approach, BoundingBox } from "scrapy-engine";
+import { Level } from "../levels/level";
 
 const MAX_SPEED = 50;
 const VERTICAL_SPEED = 150;
@@ -40,5 +41,10 @@ export class Player extends Sprite {
 		this.transform.position.y += this.velocity.y * (dt / 1000);
 
 		super.update(dt);
+	}
+
+	public kill():void{
+		let parent = this.getParent() as Level;
+		parent.killPlayer();
 	}
 }

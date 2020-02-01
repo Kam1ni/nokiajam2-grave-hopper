@@ -1,7 +1,8 @@
 import { GameWorld, Vector2, Engine, Vector3, SimObject } from "scrapy-engine";
 import { Player } from "../entities/player";
 import { Tile } from "../entities/tile";
-import { entityPosToTilePos } from "@/utils/position";
+import { entityPosToTilePos, entityPosToTilePosInt } from "@/utils/position";
+import { TombStone } from "../entities/tombstone";
 
 export abstract class Level extends GameWorld{
 	public abstract entry:Vector2;
@@ -19,6 +20,7 @@ export abstract class Level extends GameWorld{
 	private ready:boolean = false;
 
 	private tiles:Tile[] = [];
+	private tombStones:TombStone[] = [];
 
 	protected addTile(tile:Tile){
 		this.tiles.push(tile);
@@ -53,5 +55,33 @@ export abstract class Level extends GameWorld{
 				tile.onPlayerCollision(this.player, collision);
 			}
 		}
+	}
+
+	public killPlayer():void{
+		let tilePos = entityPosToTilePos(this.player.transform.position)
+		let tombstone = new TombStone(this.engine, tilePos);
+		let position = tombstone.transform.position;
+		this.resetPlayer();
+
+		for (let tombstone of this.tombStones){
+			if (tombstone.transform.position.x == position.x){
+				if (tombstone.transform.position.y == position.y){
+					return;
+				}
+			}
+		}
+		this.addTile(tombstone);
+		this.tombStones.push(tombstone);
+	}
+
+	private removeTombstone(tombstone:TombStone){
+		let i = this.tombStones.indexOf(tombstone);
+		for (let c = this.tiles.length -1; c <= 0; c--){
+			if (tombstone == this.tiles[c]){
+				this.tiles.splice(c, 1);
+			}
+		}
+		this.tombStones.splice(i, 1);
+		this.removeChild(tombstone);
 	}
 }
