@@ -14,7 +14,7 @@ engine.setCamera(camera);
 engine.setCanvasSize(new Vector2(84, 48));
 engine.setClearColor(LightColor);
 engine.setWorld(new Level1(engine));
-engine.renderBoundingBoxes = true;
+engine.renderBoundingBoxes = false;
 
 async function load(){
 	await engine.assetLoaders.textureLoader.getAsset("player.png").load()

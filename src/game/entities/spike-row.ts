@@ -1,5 +1,5 @@
 import { Tile } from "./tile";
-import { Engine, AnimatedSprite, Vector3 } from "scrapy-engine";
+import { Engine, AnimatedSprite, Vector3, Color } from "scrapy-engine";
 import { tilePosToEntityPos, tilePosToEntityPosInt } from "@/utils/position";
 import { Player } from "./player";
 
@@ -17,6 +17,7 @@ export class SpikeRow extends Tile{
 		this.hitbox.size.x = tilePosToEntityPosInt(width);
 		this.hitbox.transform.position.x += this.hitbox.size.x / 2;
 		this.hitbox.transform.position.y += this.hitbox.size.y / 2;
+		this.hitbox.color = Color.red();
 
 		this.transform.position = tilePosToEntityPos(new Vector3(posX, posY));
 	}
