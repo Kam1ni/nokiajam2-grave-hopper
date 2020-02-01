@@ -8,6 +8,7 @@ import { RoofSpikeRow } from "../entities/roof-spike-row";
 import { Bin } from "../entities/bin";
 
 export class Level2 extends Level {
+	
 	public entry: Vector2 = new Vector2(1, 1);
 	public exit: Vector2 = new Vector2(9, 1);
 	
@@ -29,5 +30,7 @@ export class Level2 extends Level {
 		this.addTile(new Bin(this.engine, 0, 1));
 	}
 
-	
+	public onFinish(): void {
+		throw new Error("Method not implemented.");
+	}
 }

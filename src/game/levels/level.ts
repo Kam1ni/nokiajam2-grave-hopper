@@ -77,7 +77,14 @@ export abstract class Level extends GameWorld{
 				tile.onPlayerCollision(this.player, collision);
 			}
 		}
+
+		let playerCoord = entityPosToTilePos(this.player.transform.position);
+		if (playerCoord.x == this.exit.x && playerCoord.y == this.exit.y){
+			this.onFinish();
+		}
 	}
+
+	public abstract onFinish():void;
 
 	public killPlayer():void{
 		let tilePos = entityPosToTilePos(this.player.transform.position)
