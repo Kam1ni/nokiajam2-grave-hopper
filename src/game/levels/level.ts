@@ -192,9 +192,9 @@ export abstract class Level extends GameWorld{
 			fadeTopReached = true;
 			this.fadeBlockTop.transform.position.y = 48;
 		}
-		if (this.fadeBlockLeft.transform.position.x <= -48){
+		if (this.fadeBlockLeft.transform.position.x <= -50){
 			fadeLeftReached = true;
-			this.fadeBlockLeft.transform.position.x = -48;
+			this.fadeBlockLeft.transform.position.x = -50;
 		}
 		if (this.fadeBlockRight.transform.position.x >= 84){
 			fadeRightReached = true;
