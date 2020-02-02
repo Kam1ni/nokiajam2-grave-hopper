@@ -20,6 +20,12 @@ export class StartScreen extends Screen {
 		if (this.engine.input.isKeyReleased(Keys.D)){
 			this.fadeOut();
 		}
+		if (this.engine.input.isKeyReleased(Keys.A)){
+			this.fadeOut();
+		}
+		if (this.engine.input.isKeyReleased(Keys.W)){
+			this.fadeOut();
+		}
 		super.update(dt);
 	}
 }
