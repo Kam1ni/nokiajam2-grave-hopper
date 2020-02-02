@@ -13,6 +13,10 @@ let config = {
 				use: "ts-loader",
 				exclude: /node_modules/
 			},
+			{
+				test: /\.(glsl)$/i,
+				use: "raw-loader"
+			},
 		]
 	},
 	resolve: {

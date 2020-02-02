@@ -5,6 +5,9 @@ import { Level2 } from "./game/levels/level2";
 import { Level3 } from "./game/levels/level3";
 import { Level4 } from "./game/levels/level4";
 import { Level5 } from "./game/levels/level5";
+import { StartScreen } from "./game/levels/start-screen";
+import { NokiaShader } from "./game/shaders/nokia-shader";
+
 
 let gameContainer = document.getElementById("canvas-container");
 let canvas = document.createElement("canvas");
@@ -17,10 +20,16 @@ camera.transform.position.x = 2;
 engine.setCamera(camera);
 engine.setCanvasSize(new Vector2(84, 48));
 engine.setClearColor(LightColor);
-engine.setWorld(new Level1(engine));
+engine.setWorld(new StartScreen(engine));
+let shader = new NokiaShader(engine);
+shader.load();
+shader.use();
+engine.setShader(shader);
+
 //engine.renderBoundingBoxes = true;
 
 async function load(){
+	await engine.assetLoaders.textureLoader.getAsset("start-screen.png").load()
 	await engine.assetLoaders.textureLoader.getAsset("player.png").load()
 	await engine.assetLoaders.textureLoader.getAsset("tiles.png").load();
 	engine.start();
