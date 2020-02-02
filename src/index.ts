@@ -34,4 +34,19 @@ async function load(){
 	engine.start();
 }
 
+function updateScaling():void{
+	let width = window.innerWidth;
+	let height = window.innerHeight;
+	let widthMultiplier = width / 84;
+	let heightMultiplier = height / 48;
+	if (widthMultiplier > heightMultiplier){
+		var scaling = heightMultiplier;
+	}else{
+		var scaling = widthMultiplier;
+	}
+	gameContainer.style.transform = `scale(${scaling}, ${scaling})`
+}
+
+updateScaling();
+window.addEventListener("resize", updateScaling);
 load();

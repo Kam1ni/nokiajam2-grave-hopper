@@ -1,10 +1,19 @@
 html, body {
-	margin:5px;
+	margin:0px;
 	padding:0;
+	overflow-y: hidden;
+	overflow-x: hidden;
 }
 
 * {
 	image-rendering: pixelated;
+	background-color:black;
+	color:white;
+}
+
+#game-container{
+	display: block;
+	height: 100vh;
 }
 
 #canvas-container {
@@ -12,4 +21,5 @@ html, body {
 	display: inline-block;
 	transform-origin: top left;
 	transform: scale(8, 8);
+	flex-shrink: 0;
 }
