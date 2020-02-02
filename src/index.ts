@@ -4,6 +4,7 @@ import { Level1 } from "./game/levels/level1";
 import { Level2 } from "./game/levels/level2";
 import { Level3 } from "./game/levels/level3";
 import { Level4 } from "./game/levels/level4";
+import { Level5 } from "./game/levels/level5";
 
 let gameContainer = document.getElementById("canvas-container");
 let canvas = document.createElement("canvas");
