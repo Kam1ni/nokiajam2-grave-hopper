@@ -4,6 +4,7 @@ import { TileBox } from "../entities/tile-box";
 import { ArrowDispenser } from "../entities/arrow-dispenser";
 import { Direction } from "@/utils/direction";
 import { Bin } from "../entities/bin";
+import { Level4 } from "./level4";
 
 export class Level3 extends Level {
 	public entry: Vector2 = new Vector2(0, 4);	
@@ -22,7 +23,7 @@ export class Level3 extends Level {
 		this.addTile(secondDispenser);
 	}
 	public onFinish(): void {
-		throw new Error("Method not implemented.");
+		this.engine.setWorld(new Level4(this.engine));
 	}
 
 }
