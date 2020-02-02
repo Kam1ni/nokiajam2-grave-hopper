@@ -3,6 +3,7 @@ import { Vector2 } from "scrapy-engine";
 import { TileBox } from "../entities/tile-box";
 import { ArrowDispenser } from "../entities/arrow-dispenser";
 import { Direction } from "@/utils/direction";
+import { Bin } from "../entities/bin";
 
 export class Level3 extends Level {
 	public entry: Vector2 = new Vector2(0, 4);	
@@ -13,7 +14,12 @@ export class Level3 extends Level {
 		this.buildFloor();
 		this.addTile(new TileBox(this.engine, 1, 1, 0, 3));
 		this.addTile(new TileBox(this.engine, 1, 1, 9, 3));
-		this.addTile(new ArrowDispenser(this.engine, Direction.UP, 1, 1))
+		this.addTile(new Bin(this.engine, 0,1));
+
+		this.addTile(new ArrowDispenser(this.engine, Direction.DOWN, 7, 5))
+		let secondDispenser = new ArrowDispenser(this.engine, Direction.DOWN, 8, 5);
+		secondDispenser.lastFired = new Date().getTime() + 2000;
+		this.addTile(secondDispenser);
 	}
 	public onFinish(): void {
 		throw new Error("Method not implemented.");

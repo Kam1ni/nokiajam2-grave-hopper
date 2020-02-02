@@ -8,7 +8,7 @@ import { Level } from "../levels/level";
 
 export class ArrowDispenser extends Tile {
 	public direction:Direction;
-	public interval:number = 3000;
+	public interval:number = 4000;
 	public lastFired:number = new Date().getTime();
 	
 	public constructor(engine:Engine, direction:Direction, posX:number = 0, posY:number = 0){

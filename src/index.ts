@@ -15,7 +15,7 @@ camera.transform.position.x = 2;
 engine.setCamera(camera);
 engine.setCanvasSize(new Vector2(84, 48));
 engine.setClearColor(LightColor);
-engine.setWorld(new Level3(engine));
+engine.setWorld(new Level1(engine));
 //engine.renderBoundingBoxes = true;
 
 async function load(){
