@@ -66,7 +66,7 @@ export abstract class Level extends Screen{
 		}
 
 		super.update(dt);
-
+		
 		let playerPos = entityPosToTilePos(this.player.transform.position)
 		if (playerPos.x < 0 || playerPos.x >= 10){
 			this.resetPlayer();
@@ -127,8 +127,9 @@ export abstract class Level extends Screen{
 				tile.onPlayerCollision(this.player, collision);
 			}
 		}
-	}
 
+		this.player.applyGravity(dt);
+	}
 
 	public levelFinished():void{
 		if (this.isFadingOut){

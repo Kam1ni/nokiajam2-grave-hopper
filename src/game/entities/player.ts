@@ -55,8 +55,6 @@ export class Player extends AnimatedSprite {
 			this.velocity.y = VERTICAL_SPEED*1.5;
 			this.touchedTheGround = false;
 			this.setRenderedLocation(3,1);
-		}else{
-			this.velocity.y = approach(this.velocity.y, -VERTICAL_SPEED, dt);
 		}
 
 		this.transform.position.x += this.velocity.x * (dt / 1000);
@@ -64,6 +62,12 @@ export class Player extends AnimatedSprite {
 
 		super.update(dt);
 	}
+
+	public applyGravity(dt:number):void{
+		this.velocity.y = approach(this.velocity.y, -VERTICAL_SPEED, dt);
+		super.update(dt);
+	}
+
 
 	public kill():void{
 		let parent = this.getParent() as Level;

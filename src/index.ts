@@ -25,7 +25,6 @@ let shader = new NokiaShader(engine);
 shader.load();
 shader.use();
 engine.setShader(shader);
-
 //engine.renderBoundingBoxes = true;
 
 async function load(){
