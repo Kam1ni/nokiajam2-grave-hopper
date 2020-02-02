@@ -1,4 +1,4 @@
-import { GameWorld, Vector2, Engine, Vector3, SimObject } from "scrapy-engine";
+import { GameWorld, Vector2, Engine, Vector3, SimObject, Rect, Color } from "scrapy-engine";
 import { Player } from "../entities/player";
 import { Tile } from "../entities/tile";
 import { entityPosToTilePos, entityPosToTilePosInt } from "@/utils/position";
@@ -6,16 +6,56 @@ import { TombStone } from "../entities/tombstone";
 import { FinishFlag } from "../entities/finish-flag";
 import { TileBox } from "../entities/tile-box";
 import { Arrow } from "../entities/arrow";
+import { DarkColor } from "@/utils/colors";
 
 const MAX_TOMBSTONES = 10;
+const VERTICAL_FADE_SPEED = 25;
+const HORIZONTAL_FADE_SPEED = 50;
 export abstract class Level extends GameWorld{
 	public abstract entry:Vector2;
 	public abstract exit:Vector2;
+	private fadeBlockLeft:Rect;
+	private fadeBlockRight:Rect;
+	private fadeBlockTop:Rect;
+	private fadeBlockBottom:Rect;
+	private isFadingIn:boolean = false;
+	private isFadingOut:boolean = false;
 
+	
 	public constructor(engine:Engine){
 		super(engine);
+		this.createFadeBlocks();
 		this.player = new Player(this.engine);
-		this.addChild(this.player)
+		this.addChild(this.player);
+	}
+
+	private createFadeBlocks(){
+		this.fadeBlockBottom = new Rect(this.engine, 88, 24, DarkColor);
+		this.fadeBlockTop = new Rect(this.engine, 88, 24, DarkColor);
+		this.fadeBlockLeft = new Rect(this.engine, 48, 48, DarkColor);
+		this.fadeBlockRight = new Rect(this.engine, 48, 48, DarkColor);
+
+		this.addChild(this.fadeBlockTop);
+		this.addChild(this.fadeBlockBottom);
+		this.addChild(this.fadeBlockRight);
+		this.addChild(this.fadeBlockLeft);
+		
+		this.fadeBlockTop.transform.position.x = -4;
+		this.fadeBlockTop.transform.position.y = 24;
+
+		this.fadeBlockBottom.transform.position.x = -4;
+		this.fadeBlockBottom.transform.position.y = 0;
+
+		this.fadeBlockLeft.transform.position.x = -8;
+		this.fadeBlockLeft.transform.position.y = 0;
+
+		this.fadeBlockRight.transform.position.x = 40;
+		this.fadeBlockRight.transform.position.y = 0;
+
+		this.fadeBlockBottom.transform.position.z = 10;
+		this.fadeBlockTop.transform.position.z = 10;
+		this.fadeBlockLeft.transform.position.z = 10;
+		this.fadeBlockRight.transform.position.z = 10;
 	}
 
 	protected abstract buildLevel():void;
@@ -26,6 +66,7 @@ export abstract class Level extends GameWorld{
 	private tiles:Tile[] = [];
 	private tombStones:TombStone[] = [];
 	private arrows:Arrow[] = [];
+
 
 	protected addTile(tile:Tile){
 		this.tiles.push(tile);
@@ -57,6 +98,15 @@ export abstract class Level extends GameWorld{
 			this.resetPlayer();
 			this.addTile(new FinishFlag(this.engine, this.exit));
 			this.ready = true;
+			this.fadeIn();
+		}
+
+		if (this.isFadingIn){
+			this.doFadeInFrame(dt);
+		}
+
+		if (this.isFadingOut){
+			this.doFadeOutFrame(dt);
 		}
 		
 		super.update(dt);
@@ -123,10 +173,88 @@ export abstract class Level extends GameWorld{
 		}
 	}
 
+	private doFadeInFrame(dt:number){
+		let t = dt/1000;
+		this.fadeBlockBottom.transform.position.y -= VERTICAL_FADE_SPEED * t;
+		this.fadeBlockTop.transform.position.y += VERTICAL_FADE_SPEED * t;
+		this.fadeBlockLeft.transform.position.x -= HORIZONTAL_FADE_SPEED * t;
+		this.fadeBlockRight.transform.position.x += HORIZONTAL_FADE_SPEED * t;
+
+		let fadeBottomReached = false;
+		let fadeTopReached = false;
+		let fadeLeftReached = false;
+		let fadeRightReached = false;
+		if (this.fadeBlockBottom.transform.position.y <= -24){
+			fadeBottomReached = true;
+			this.fadeBlockBottom.transform.position.y = -24;
+		}
+		if (this.fadeBlockTop.transform.position.y >= 48){
+			fadeTopReached = true;
+			this.fadeBlockTop.transform.position.y = 48;
+		}
+		if (this.fadeBlockLeft.transform.position.x <= -48){
+			fadeLeftReached = true;
+			this.fadeBlockLeft.transform.position.x = -48;
+		}
+		if (this.fadeBlockRight.transform.position.x >= 84){
+			fadeRightReached = true;
+			this.fadeBlockRight.transform.position.x = 84;
+		}
+
+		if (fadeBottomReached && fadeTopReached && fadeLeftReached && fadeRightReached){
+			this.isFadingIn = false;
+		}
+	}
+
+	private doFadeOutFrame(dt:number){
+		let t = dt/1000;
+		this.fadeBlockBottom.transform.position.y += VERTICAL_FADE_SPEED * t;
+		this.fadeBlockTop.transform.position.y -= VERTICAL_FADE_SPEED * t;
+		this.fadeBlockLeft.transform.position.x += HORIZONTAL_FADE_SPEED * t;
+		this.fadeBlockRight.transform.position.x -= HORIZONTAL_FADE_SPEED * t;
+
+		let fadeBottomReached = false;
+		let fadeTopReached = false;
+		let fadeLeftReached = false;
+		let fadeRightReached = false;
+		if (this.fadeBlockBottom.transform.position.y >= 0){
+			fadeBottomReached = true;
+			this.fadeBlockBottom.transform.position.y = 0;
+		}
+		if (this.fadeBlockTop.transform.position.y <= 24){
+			fadeTopReached = true;
+			this.fadeBlockTop.transform.position.y = 24;
+		}
+		if (this.fadeBlockLeft.transform.position.x >= -8){
+			fadeLeftReached = true;
+			this.fadeBlockLeft.transform.position.x = -8;
+		}
+		if (this.fadeBlockRight.transform.position.x <= 40){
+			fadeRightReached = true;
+			this.fadeBlockRight.transform.position.x = 40;
+		}
+
+		if (fadeBottomReached && fadeTopReached && fadeLeftReached && fadeRightReached){
+			this.isFadingOut = false;
+			this.onFinish();
+		}
+	}
+
+	public fadeOut():void{
+		this.isFadingOut = true;
+		this.isFadingIn = false;
+	}
+
+	public fadeIn():void{
+		this.isFadingOut = false;
+		this.isFadingIn = true;
+	}
 
 	public levelFinished():void{
-		//TODO: implement fadeout
-		this.onFinish();
+		if (this.isFadingOut){
+			return;
+		}
+		this.fadeOut();
 	}
 
 	public abstract onFinish():void;

@@ -33,6 +33,8 @@ export class FinishFlag extends Tile{
 		}
 
 		let level = this.getParent() as Level;
-		level.levelFinished()
+		if (level){
+			level.levelFinished();
+		}
 	}
 }
