@@ -2,6 +2,7 @@ import {Engine, Vector2, OrthographicCamera } from "scrapy-engine";
 import { LightColor } from "./utils/colors";
 import { Level1 } from "./game/levels/level1";
 import { Level2 } from "./game/levels/level2";
+import { Level3 } from "./game/levels/level3";
 
 let gameContainer = document.getElementById("canvas-container");
 let canvas = document.createElement("canvas");
@@ -14,7 +15,7 @@ camera.transform.position.x = 2;
 engine.setCamera(camera);
 engine.setCanvasSize(new Vector2(84, 48));
 engine.setClearColor(LightColor);
-engine.setWorld(new Level1(engine));
+engine.setWorld(new Level3(engine));
 //engine.renderBoundingBoxes = true;
 
 async function load(){

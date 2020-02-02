@@ -6,6 +6,7 @@ import { DrawBridge } from "../entities/draw-bridge";
 import { Button } from "../entities/button";
 import { RoofSpikeRow } from "../entities/roof-spike-row";
 import { Bin } from "../entities/bin";
+import { Level3 } from "./level3";
 
 export class Level2 extends Level {
 	
@@ -31,6 +32,6 @@ export class Level2 extends Level {
 	}
 
 	public onFinish(): void {
-		throw new Error("Method not implemented.");
+		this.engine.setWorld(new Level3(this.engine));
 	}
 }

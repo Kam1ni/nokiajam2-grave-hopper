@@ -5,6 +5,7 @@ import { entityPosToTilePos, entityPosToTilePosInt } from "@/utils/position";
 import { TombStone } from "../entities/tombstone";
 import { FinishFlag } from "../entities/finish-flag";
 import { TileBox } from "../entities/tile-box";
+import { Arrow } from "../entities/arrow";
 
 const MAX_TOMBSTONES = 10;
 export abstract class Level extends GameWorld{
@@ -24,6 +25,7 @@ export abstract class Level extends GameWorld{
 
 	private tiles:Tile[] = [];
 	private tombStones:TombStone[] = [];
+	private arrows:Arrow[] = [];
 
 	protected addTile(tile:Tile){
 		this.tiles.push(tile);
@@ -83,6 +85,30 @@ export abstract class Level extends GameWorld{
 					continue;
 				}
 				tile.onTombstoneCollision(tombstone, collision);
+			}
+		}
+
+		for (let i = this.arrows.length - 1; i >= 0; i--){
+			let arrow = this.arrows[i];
+			let collision = arrow.hitbox.isTouching(this.player.hitbox);
+			if (collision){
+				if (collision.x != 0 && collision.y != 0){
+					this.killPlayer();
+					this.arrows.splice(i, 1);
+					this.removeChild(arrow);
+					continue;
+				}
+			}
+			
+			for (let tile of this.tiles){
+				collision = arrow.hitbox.isTouching(tile.hitbox);
+				if (collision){
+					if (tile.onArrowCollision(arrow, collision)){
+						this.arrows.splice(i, 1);
+						this.removeChild(arrow);
+						break;
+					}
+				}
 			}
 		}
 
@@ -148,5 +174,10 @@ export abstract class Level extends GameWorld{
 			this.tombStones.splice(i, 1);
 			this.removeChild(tombstone);
 		}
+	}
+
+	public spawnArrow(arrow:Arrow){
+		this.arrows.push(arrow);
+		this.addChild(arrow);
 	}
 }

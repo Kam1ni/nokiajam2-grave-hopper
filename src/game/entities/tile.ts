@@ -2,6 +2,8 @@ import { SimObject, BoundingBox, Vector3, Engine, Color } from "scrapy-engine";
 import { Player } from "./player";
 import { TombStone } from "./tombstone";
 import { entityPosToTilePosInt, tilePosToEntityPosInt, entityPosToTilePos } from "@/utils/position";
+import { Arrow } from "./arrow";
+import { Direction } from "@/utils/direction";
 
 export abstract class Tile extends SimObject {
 	public hitbox:BoundingBox;
@@ -46,6 +48,23 @@ export abstract class Tile extends SimObject {
 			let coord = entityPosToTilePosInt(this.transform.position.y)
 			tombstone.transform.position.y = tilePosToEntityPosInt(coord + 1);
 		}
+	}
+
+	public onArrowCollision(arrow:Arrow, collision:Vector3):boolean{
+		if (Math.abs(collision.y) < Math.abs(collision.x)) {
+			if (collision.y > 0 && arrow.direction == Direction.UP) {
+				return true;
+			}else if (collision.y < 0 && arrow.direction == Direction.DOWN) {
+				return true;
+			}
+		}else {
+			if (collision.x > 0 && arrow.direction == Direction.RIGHT) {
+				return true;
+			}else if (collision.x < 0 && arrow.direction == Direction.LEFT) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public getIsActive():boolean {
