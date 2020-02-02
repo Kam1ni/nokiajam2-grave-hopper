@@ -3,7 +3,10 @@ import { Player } from "../entities/player";
 import { Tile } from "../entities/tile";
 import { entityPosToTilePos, entityPosToTilePosInt } from "@/utils/position";
 import { TombStone } from "../entities/tombstone";
+import { FinishFlag } from "../entities/finish-flag";
+import { TileBox } from "../entities/tile-box";
 
+const MAX_TOMBSTONES = 10;
 export abstract class Level extends GameWorld{
 	public abstract entry:Vector2;
 	public abstract exit:Vector2;
@@ -32,10 +35,25 @@ export abstract class Level extends GameWorld{
 		this.player.transform.position.y = this.entry.y * 8;
 	}
 
+	private buildFrame():void{
+		this.addTile(new TileBox(this.engine, 1, 6, -1, 0));
+		this.addTile(new TileBox(this.engine, 1, 6, 10, 0));
+	}
+
+	protected buildFloor():void{
+		this.addTile(new TileBox(this.engine, 10, 1, 0, 0))
+	}
+
+	protected buildRoof():void{
+		this.addTile(new TileBox(this.engine, 10, 1, 0, 5))
+	}
+
 	public update(dt:number):void{
 		if (!this.ready){
 			this.buildLevel();
+			this.buildFrame();
 			this.resetPlayer();
+			this.addTile(new FinishFlag(this.engine, this.exit));
 			this.ready = true;
 		}
 		
@@ -77,11 +95,12 @@ export abstract class Level extends GameWorld{
 				tile.onPlayerCollision(this.player, collision);
 			}
 		}
+	}
 
-		let playerCoord = entityPosToTilePos(this.player.transform.position);
-		if (playerCoord.x == this.exit.x && playerCoord.y == this.exit.y){
-			this.onFinish();
-		}
+
+	public levelFinished():void{
+		//TODO: implement fadeout
+		this.onFinish();
 	}
 
 	public abstract onFinish():void;
@@ -91,6 +110,10 @@ export abstract class Level extends GameWorld{
 		let tombstone = new TombStone(this.engine, tilePos);
 		let position = tombstone.transform.position;
 		this.resetPlayer();
+
+		if (this.tombStones.length >= MAX_TOMBSTONES){
+			return;
+		}
 
 		for (let tombstone of this.tombStones){
 			if (tombstone.transform.position.x == position.x){

@@ -9,20 +9,20 @@ import { Bin } from "../entities/bin";
 
 export class Level2 extends Level {
 	
-	public entry: Vector2 = new Vector2(1, 1);
+	public entry: Vector2 = new Vector2(2, 1);
 	public exit: Vector2 = new Vector2(9, 1);
 	
 	protected buildLevel(): void {
-		this.addTile(new TileBox(this.engine, 4, 1, 0, 0))
-		this.addTile(new TileBox(this.engine, 2, 1, 8, 0))
-		this.addTile(new RoofSpikeRow(this.engine, 1, 3, 4));
-		this.addTile(new TileBox(this.engine, 1, 1, 2, 1));
+		this.addTile(new TileBox(this.engine, 5, 1, 0, 0))
+		this.addTile(new TileBox(this.engine, 1, 1, 9, 0))
+		this.addTile(new RoofSpikeRow(this.engine, 1, 4, 4));
+		this.addTile(new TileBox(this.engine, 1, 1, 3, 1));
 		this.addTile(new TileBox(this.engine, 10, 1, 0, 5))
 
-		let bridge = new DrawBridge(this.engine, 4, 4, 0);
+		let bridge = new DrawBridge(this.engine, 4, 5, 0);
 		this.addTile(bridge);
 
-		let button = new Button(this.engine, 3, 1);
+		let button = new Button(this.engine, 4, 1);
 		this.addTile(button);
 		button.setOnPress(()=>bridge.activate());
 		button.setOnRelease(()=>bridge.deactive());
