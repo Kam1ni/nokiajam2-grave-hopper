@@ -1,17 +1,20 @@
-import { Engine, Sprite, Vector2, Keys, approach, BoundingBox } from "scrapy-engine";
+import { Engine, Vector2, Keys, approach, BoundingBox, AnimatedSprite } from "scrapy-engine";
 import { Level } from "../levels/level";
 
 const MAX_SPEED = 50;
 const VERTICAL_SPEED = 150;
+const FRAME_INTERVAL = 100;
 
-export class Player extends Sprite {
+export class Player extends AnimatedSprite {
 	public velocity:Vector2 = new Vector2(0,0);
 	public touchedTheGround:boolean = true;
 	public hitbox:BoundingBox;
+	public lastFrameStep:number = new Date().getTime();
 
 
 	public constructor(engine:Engine){
-		super(engine, "player.png");
+		super(engine, "player.png", 5, 5);
+		this.setRenderedLocation(1, 1);
 		this.hitbox = new BoundingBox(engine);
 		this.hitbox.size.x = 8;
 		this.hitbox.size.y = 8;
@@ -30,9 +33,28 @@ export class Player extends Sprite {
 			this.velocity.x = approach(this.velocity.x, 0, acc);
 		}
 
+		if (this.touchedTheGround){
+			let now = new Date().getTime();
+			if (this.velocity.x != 0){
+				if (this.lastFrameStep <= now - FRAME_INTERVAL){
+					let renderX = this.getRenderedLocation().x;
+					if (renderX == 1){
+						renderX = 3;
+					}else{
+						renderX = 1;
+					}
+					this.setRenderedLocation(renderX, 3);
+					this.lastFrameStep = now;
+				}
+			}else{
+				this.setRenderedLocation(1,1);
+			}
+		}
+
 		if (this.touchedTheGround && this.engine.input.isKeyPressed(Keys.W)){
 			this.velocity.y = VERTICAL_SPEED;
 			this.touchedTheGround = false;
+			this.setRenderedLocation(3,1);
 		}else{
 			this.velocity.y = approach(this.velocity.y, -VERTICAL_SPEED, dt);
 		}
