@@ -6,6 +6,7 @@ import { DrawBridge } from "../entities/draw-bridge";
 import { RoofSpikeRow } from "../entities/roof-spike-row";
 import { Button } from "../entities/button";
 import { Bin } from "../entities/bin";
+import { Level5 } from "./level5";
 
 export class Level4 extends Level{
 	public entry: Vector2 = new Vector2(2, 4);
@@ -13,7 +14,7 @@ export class Level4 extends Level{
 	protected buildLevel(): void {
 		this.buildFloor();
 		this.buildRoof();
-		
+
 		let drawBridge = new DrawBridge(this.engine, 2, 6, 2);
 		drawBridge.activate();
 		this.addTile(drawBridge);
@@ -57,7 +58,7 @@ export class Level4 extends Level{
 		});
 	}
 	public onFinish(): void {
-		throw new Error("Method not implemented.");
+		this.engine.setWorld(new Level5(this.engine));
 	}
 
 
