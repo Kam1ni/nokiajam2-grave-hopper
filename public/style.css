@@ -14,12 +14,13 @@ html, body {
 #game-container{
 	display: block;
 	height: 100vh;
+	text-align: center;
 }
 
 #canvas-container {
 	margin:0px;
 	display: inline-block;
-	transform-origin: top left;
+	transform-origin: top center;
 	transform: scale(8, 8);
 	flex-shrink: 0;
 }
