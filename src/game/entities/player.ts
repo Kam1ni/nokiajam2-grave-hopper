@@ -2,7 +2,7 @@ import { Engine, Vector2, Keys, approach, BoundingBox, AnimatedSprite } from "sc
 import { Level } from "../levels/level";
 
 const MAX_SPEED = 50;
-const VERTICAL_SPEED = 150;
+const VERTICAL_SPEED = 100;
 const FRAME_INTERVAL = 100;
 
 export class Player extends AnimatedSprite {
@@ -52,7 +52,7 @@ export class Player extends AnimatedSprite {
 		}
 
 		if (this.touchedTheGround && this.engine.input.isKeyPressed(Keys.W)){
-			this.velocity.y = VERTICAL_SPEED;
+			this.velocity.y = VERTICAL_SPEED*1.5;
 			this.touchedTheGround = false;
 			this.setRenderedLocation(3,1);
 		}else{
