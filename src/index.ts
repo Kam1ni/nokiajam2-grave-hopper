@@ -7,6 +7,7 @@ import { Level4 } from "./game/levels/level4";
 import { Level5 } from "./game/levels/level5";
 import { StartScreen } from "./game/levels/start-screen";
 import { NokiaShader } from "./game/shaders/nokia-shader";
+import { Actions, actionIsPressed, actionIsReleased } from "./utils/actions";
 
 
 let gameContainer = document.getElementById("canvas-container");
@@ -25,6 +26,20 @@ let shader = new NokiaShader(engine);
 shader.load();
 shader.use();
 engine.setShader(shader);
+
+function registerButtons(className:string, action:Actions){
+	let buttons = document.getElementsByClassName(className) as HTMLCollectionOf<HTMLButtonElement>;
+	for (let button of buttons){
+		button.addEventListener("mousedown", ()=>actionIsPressed(action));
+		button.addEventListener("mouseup", ()=>actionIsReleased(action));
+		button.addEventListener("touchstart", ()=>actionIsPressed(action));
+		button.addEventListener("touchend", ()=>actionIsReleased(action));
+	}
+}
+
+registerButtons("up", Actions.JUMP);
+registerButtons("left", Actions.MOVE_LEFT);
+registerButtons("right", Actions.MOVE_RIGHT);
 //engine.renderBoundingBoxes = true;
 
 async function load(){
@@ -36,7 +51,7 @@ async function load(){
 
 function updateScaling():void{
 	let width = window.innerWidth;
-	let height = window.innerHeight;
+	let height = window.innerHeight - 240;
 	let widthMultiplier = width / 84;
 	let heightMultiplier = height / 48;
 	if (widthMultiplier > heightMultiplier){

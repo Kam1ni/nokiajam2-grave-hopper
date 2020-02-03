@@ -1,5 +1,6 @@
 import { Engine, Vector2, Keys, approach, BoundingBox, AnimatedSprite } from "scrapy-engine";
 import { Level } from "../levels/level";
+import { isActionDown, Actions } from "@/utils/actions";
 
 const MAX_SPEED = 50;
 const VERTICAL_SPEED = 100;
@@ -25,9 +26,9 @@ export class Player extends AnimatedSprite {
 
 	public update(dt:number){
 		let acc = dt;
-		if (this.engine.input.isKeyDown(Keys.D)){
+		if (isActionDown(Actions.MOVE_RIGHT)){
 			this.velocity.x = approach(this.velocity.x, MAX_SPEED, acc)
-		}else if (this.engine.input.isKeyDown(Keys.A)){
+		}else if (isActionDown(Actions.MOVE_LEFT)){
 			this.velocity.x = approach(this.velocity.x, -MAX_SPEED, acc)
 		}else {
 			this.velocity.x = approach(this.velocity.x, 0, acc);
@@ -51,7 +52,7 @@ export class Player extends AnimatedSprite {
 			}
 		}
 
-		if (this.touchedTheGround && this.engine.input.isKeyPressed(Keys.W)){
+		if (this.touchedTheGround && isActionDown(Actions.JUMP)){
 			this.velocity.y = VERTICAL_SPEED*1.5;
 			this.touchedTheGround = false;
 			this.setRenderedLocation(3,1);

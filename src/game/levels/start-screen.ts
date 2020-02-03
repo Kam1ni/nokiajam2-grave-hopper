@@ -1,6 +1,7 @@
 import { Screen } from "./screen";
 import { Level1 } from "./level1";
 import { Engine, Sprite, Keys } from "scrapy-engine";
+import { isActionPressed, Actions, isActionDown } from "@/utils/actions";
 
 export class StartScreen extends Screen {
 	public constructor(engine:Engine){
@@ -17,15 +18,15 @@ export class StartScreen extends Screen {
 	}
 
 	public update(dt:number){
-		if (this.engine.input.isKeyReleased(Keys.D)){
-			this.fadeOut();
-		}
-		if (this.engine.input.isKeyReleased(Keys.A)){
-			this.fadeOut();
-		}
-		if (this.engine.input.isKeyReleased(Keys.W)){
-			this.fadeOut();
-		}
 		super.update(dt);
+		if (isActionDown(Actions.JUMP)){
+			this.fadeOut();
+		}
+		if (isActionDown(Actions.MOVE_LEFT)){
+			this.fadeOut();
+		}
+		if (isActionDown(Actions.MOVE_RIGHT)){
+			this.fadeOut();
+		}
 	}
 }

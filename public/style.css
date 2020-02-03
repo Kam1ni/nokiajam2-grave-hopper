@@ -9,18 +9,49 @@ html, body {
 	image-rendering: pixelated;
 	background-color:black;
 	color:white;
+	user-select: none;
 }
 
 #game-container{
-	display: block;
+	display: flex;
+	flex-direction: column;
 	height: 100vh;
 	text-align: center;
+	flex-shrink: 1;
+}
+
+.grow {
+	flex-grow: 1;
+	flex-shrink: 1;
+}
+
+.col{
+	display: flex;
+	flex-direction: column;
+}
+
+.buttons{
+	height: 240px;
+	display: flex;
+	flex-direction: row;
+	padding: 20px;
+	box-sizing: border-box;
 }
 
 #canvas-container {
 	margin:0px;
-	display: inline-block;
+	padding: 0;
+	background: none;
+	display: block;
 	transform-origin: top center;
-	transform: scale(8, 8);
 	flex-shrink: 0;
+	box-sizing: border-box;
+	border: none;
+	height: 48px;
+}
+
+button {
+	padding: 20px;
+	margin-top: 20px;
+	font-size: 20px;
 }

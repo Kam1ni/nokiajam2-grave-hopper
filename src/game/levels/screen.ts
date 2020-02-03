@@ -1,5 +1,6 @@
-import { GameWorld, Engine, Rect } from "scrapy-engine";
+import { GameWorld, Engine, Rect, Keys } from "scrapy-engine";
 import { DarkColor } from "@/utils/colors";
+import { actionIsPressed, updateActions, Actions, actionIsReleased } from "@/utils/actions";
 
 const VERTICAL_FADE_SPEED = 25;
 const HORIZONTAL_FADE_SPEED = 50;
@@ -47,6 +48,27 @@ export abstract class Screen extends GameWorld {
 	}
 
 	public update(dt:number){
+		updateActions();
+		if (this.engine.input.isKeyPressed(Keys.W)){
+			actionIsPressed(Actions.JUMP);
+		}
+		if (this.engine.input.isKeyPressed(Keys.A)){
+			actionIsPressed(Actions.MOVE_LEFT);
+		}
+		if (this.engine.input.isKeyPressed(Keys.D)){
+			actionIsPressed(Actions.MOVE_RIGHT);
+		}
+
+		if (this.engine.input.isKeyReleased(Keys.W)){
+			actionIsReleased(Actions.JUMP);
+		}
+		if (this.engine.input.isKeyReleased(Keys.A)){
+			actionIsReleased(Actions.MOVE_LEFT);
+		}
+		if (this.engine.input.isKeyReleased(Keys.D)){
+			actionIsReleased(Actions.MOVE_RIGHT);
+		}
+
 		if (this.isFadingIn){
 			this.doFadeInFrame(dt);
 		}
