@@ -43,9 +43,12 @@ registerButtons("right", Actions.MOVE_RIGHT);
 //engine.renderBoundingBoxes = true;
 
 async function load(){
-	await engine.assetLoaders.textureLoader.getAsset("start-screen.png").load()
-	await engine.assetLoaders.textureLoader.getAsset("player.png").load()
+	await engine.assetLoaders.textureLoader.getAsset("start-screen.png").load();
+	await engine.assetLoaders.textureLoader.getAsset("player.png").load();
 	await engine.assetLoaders.textureLoader.getAsset("tiles.png").load();
+	await engine.assetLoaders.audioLoader.getAsset("entry.mp3").load();
+	await engine.assetLoaders.audioLoader.getAsset("exit.mp3").load();
+	await engine.assetLoaders.audioLoader.getAsset("dead.mp3").load();
 	engine.start();
 }
 

@@ -1,9 +1,9 @@
-import { GameWorld, Engine, Rect, Keys } from "scrapy-engine";
+import { GameWorld, Engine, Rect, Keys, Audio } from "scrapy-engine";
 import { DarkColor } from "@/utils/colors";
 import { actionIsPressed, updateActions, Actions, actionIsReleased } from "@/utils/actions";
 
-const VERTICAL_FADE_SPEED = 25;
-const HORIZONTAL_FADE_SPEED = 50;
+const VERTICAL_FADE_SPEED = 20;
+const HORIZONTAL_FADE_SPEED = 40;
 
 export abstract class Screen extends GameWorld {
 	protected fadeBlockLeft:Rect;
@@ -12,9 +12,13 @@ export abstract class Screen extends GameWorld {
 	protected fadeBlockBottom:Rect;
 	protected isFadingIn:boolean = false;
 	protected isFadingOut:boolean = false;
+	protected entryAudio:Audio;
+	protected exitAudio:Audio;
 
 	public constructor(engine:Engine){
 		super(engine);
+		this.entryAudio = this.engine.assetLoaders.audioLoader.getAsset("entry.mp3");
+		this.exitAudio = this.engine.assetLoaders.audioLoader.getAsset("exit.mp3");
 		this.createFadeBlocks();
 	}
 	
@@ -144,6 +148,7 @@ export abstract class Screen extends GameWorld {
 
 		if (fadeBottomReached && fadeTopReached && fadeLeftReached && fadeRightReached){
 			this.isFadingOut = false;
+			this.stopOtherAudios();
 			this.onFadeOutFinish();
 		}
 	}
@@ -154,6 +159,7 @@ export abstract class Screen extends GameWorld {
 		}
 		this.isFadingOut = true;
 		this.isFadingIn = false;
+		this.playAudio(this.exitAudio);
 	}
 
 	public fadeIn():void{
@@ -162,6 +168,20 @@ export abstract class Screen extends GameWorld {
 		}
 		this.isFadingOut = false;
 		this.isFadingIn = true;
+		this.playAudio(this.entryAudio);
+	}
+
+	public playAudio(audio:Audio){
+		this.stopOtherAudios();
+		document.body.append(audio.play());
+	}
+
+	public stopOtherAudios():void{
+		let audios = document.getElementsByTagName("audio");
+		for (let audio of audios){
+			audio.pause();
+			audio.remove();
+		}
 	}
 
 	public abstract onFadeOutFinish():void;

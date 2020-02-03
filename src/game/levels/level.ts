@@ -38,6 +38,7 @@ export abstract class Level extends Screen{
 	}
 
 	private resetPlayer():void{
+		this.playAudio(this.engine.assetLoaders.audioLoader.getAsset("dead.mp3"));
 		this.player.transform.position.x = this.entry.x * 8;
 		this.player.transform.position.y = this.entry.y * 8;
 	}
@@ -132,9 +133,6 @@ export abstract class Level extends Screen{
 	}
 
 	public levelFinished():void{
-		if (this.isFadingOut){
-			return;
-		}
 		this.fadeOut();
 	}
 
