@@ -24,6 +24,7 @@ export class Level4 extends Level{
 		this.addTile(new TileBox(this.engine, 1, 1, 9, 1));
 		this.addTile(new RoofSpikeRow(this.engine, 1, 6, 4));
 		this.addTile(new Bin(this.engine, 7, 1));
+		this.addTile(new Bin(this.engine, 5, 1));
 
 		let door1 = new Door(this.engine, 2, 1, 1);
 		door1.activate();
