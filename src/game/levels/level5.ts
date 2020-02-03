@@ -6,6 +6,7 @@ import { Button } from "../entities/button";
 import { SpikeRow } from "../entities/spike-row";
 import { RoofSpikeRow } from "../entities/roof-spike-row";
 import { Bin } from "../entities/bin";
+import { Level6 } from "./level6";
 
 export class Level5 extends Level{
 	public entry: Vector2 = new Vector2(3,3);
@@ -56,7 +57,7 @@ export class Level5 extends Level{
 		this.addTile(new Bin(this.engine, 0, 3));
 	}
 	public onFinish(): void {
-		throw new Error("Method not implemented.");
+		this.engine.setWorld(new Level6(this.engine));
 	}
 
 

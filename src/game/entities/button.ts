@@ -3,6 +3,7 @@ import { Engine, AnimatedSprite, Vector2, Vector3 } from "scrapy-engine";
 import { Player } from "./player";
 import { TombStone } from "./tombstone";
 import { tilePosToEntityPos, tilePosToEntityPosInt, entityPosToTilePos, entityPosToTilePosInt } from "@/utils/position";
+import { Arrow } from "./arrow";
 
 export class Button extends Tile {
 	private pressed:boolean = false;
@@ -76,5 +77,9 @@ export class Button extends Tile {
 			return;
 		}
 		this.press();
+	}
+
+	public onArrowCollision(arrow:Arrow, collision:Vector3):boolean{
+		return false;
 	}
 }
