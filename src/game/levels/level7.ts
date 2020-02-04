@@ -7,6 +7,7 @@ import { DrawBridge } from "../entities/draw-bridge";
 import { Button } from "../entities/button";
 import { SpikeRow } from "../entities/spike-row";
 import { Door } from "../entities/door";
+import { EndScreen } from "./end-screen";
 
 export class Level7 extends Level {
 	public entry: Vector2 = new Vector2(2, 4);
@@ -75,7 +76,8 @@ export class Level7 extends Level {
 		this.addTile(new Bin(this.engine, 8, 4))
 	}
 	public onFinish(): void {
-		throw new Error("Method not implemented.");
+		console.log("On finish")
+		this.engine.setWorld(new EndScreen(this.engine))
 	}
 
 
