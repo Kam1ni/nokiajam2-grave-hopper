@@ -1,6 +1,6 @@
 import { Tile } from "./tile";
 import { Engine, AnimatedSprite, Vector3, Color } from "scrapy-engine";
-import { tilePosToEntityPos, tilePosToEntityPosInt } from "@/utils/position";
+import { tilePosToEntityPos, tilePosToEntityPosInt, entityPosToTilePos } from "@/utils/position";
 import { Player } from "./player";
 import { TombStone } from "./tombstone";
 
@@ -24,10 +24,7 @@ export class RoofSpikeRow extends Tile{
 	}
 
 	public onPlayerCollision(player:Player, collision:Vector3):void{
-		if (Math.abs(collision.x) < 1){
-			return;
-		}
-		player.transform.position.copyFrom(this.transform.position);
+		player.transform.position.copyFrom(tilePosToEntityPos(entityPosToTilePos(player.transform.position)));
 		player.kill();
 	}
 

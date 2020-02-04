@@ -8,6 +8,7 @@ import { Level5 } from "./game/levels/level5";
 import { StartScreen } from "./game/levels/start-screen";
 import { NokiaShader } from "./game/shaders/nokia-shader";
 import { Actions, actionIsPressed, actionIsReleased } from "./utils/actions";
+import { Level7 } from "./game/levels/level7";
 
 
 let gameContainer = document.getElementById("canvas-container");

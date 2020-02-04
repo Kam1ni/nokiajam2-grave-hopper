@@ -6,6 +6,7 @@ import { Direction } from "@/utils/direction";
 import { Door } from "../entities/door";
 import { Bin } from "../entities/bin";
 import { Button } from "../entities/button";
+import { Level7 } from "./level7";
 
 export class Level6 extends Level {
 	public entry: Vector2 = new Vector2(2, 1);	
@@ -47,6 +48,6 @@ export class Level6 extends Level {
 	}
 
 	public onFinish(): void {
-		throw new Error("Method not implemented.");
+		this.engine.setWorld(new Level7(this.engine));
 	}
 }
