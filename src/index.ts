@@ -40,7 +40,7 @@ function registerButtons(className:string, action:Actions){
 registerButtons("up", Actions.JUMP);
 registerButtons("left", Actions.MOVE_LEFT);
 registerButtons("right", Actions.MOVE_RIGHT);
-//engine.renderBoundingBoxes = true;
+// engine.renderBoundingBoxes = true;
 
 async function load(){
 	await engine.assetLoaders.textureLoader.getAsset("start-screen.png").load();

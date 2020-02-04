@@ -1,44 +1,59 @@
-import { Engine, SimObject, BoundingBox, AnimatedSprite, degToRad } from "scrapy-engine";
+import { Engine, SimObject, BoundingBox, AnimatedSprite, degToRad, Color } from "scrapy-engine";
 import { Direction } from "@/utils/direction";
-import { tilePosToEntityPos, tilePosToEntityPosInt } from "@/utils/position";
+import { tilePosToEntityPos, tilePosToEntityPosInt, entityPosToTilePosInt } from "@/utils/position";
+import { ArrowDispenser } from "./arrow-dispenser";
 
 const SPEED = 30;
 
 export class Arrow extends SimObject {
 	public hitbox:BoundingBox;
 	public direction:Direction;
+	public sender:ArrowDispenser;
 
-	public constructor(engine:Engine, direction:Direction, posX:number = 0, posY:number = 0){
+	public constructor(engine:Engine, sender:ArrowDispenser){
 		super(engine);
-		this.direction = direction;
+		this.sender = sender;
+		this.direction = sender.direction;
 		let sprite = new AnimatedSprite(this.engine, "tiles.png", 4, 4);
 		sprite.setRenderedLocation(3, 2);
 		this.addChild(sprite);
 
-		if (direction == Direction.DOWN){
+		this.hitbox = new BoundingBox(this.engine);
+		this.addChild(this.hitbox);
+
+		this.hitbox.size.x = tilePosToEntityPosInt(1);
+		this.hitbox.size.y = tilePosToEntityPosInt(.5);
+		this.hitbox.transform.position.x = this.hitbox.size.x / 2;
+		this.hitbox.transform.position.y = tilePosToEntityPosInt(.5);
+		if (this.direction == Direction.DOWN){
 			sprite.transform.rotation.z = degToRad(-90);
 			sprite.transform.position.y = tilePosToEntityPosInt(1);
+			this.hitbox.size.x = tilePosToEntityPosInt(.5);
+			this.hitbox.size.y = tilePosToEntityPosInt(1);
+			this.hitbox.transform.position.x = tilePosToEntityPosInt(.5);
+			this.hitbox.transform.position.y = this.hitbox.size.y / 2;
 		}
-		if (direction == Direction.UP){
+		if (this.direction == Direction.UP){
 			sprite.transform.rotation.z = degToRad(90);
 			sprite.transform.position.x = tilePosToEntityPosInt(1);
+			this.hitbox.size.x = tilePosToEntityPosInt(.5);
+			this.hitbox.size.y = tilePosToEntityPosInt(1);
+			this.hitbox.transform.position.x = tilePosToEntityPosInt(.5);
+			this.hitbox.transform.position.y = this.hitbox.size.y / 2; 
 		}
-		if (direction == Direction.LEFT){
+		if (this.direction == Direction.LEFT){
 			sprite.transform.scale.x = -1;
 			sprite.transform.position.x = tilePosToEntityPosInt(1);
 		}
 
-		sprite.transform.position.z = .2;
-		
-		this.hitbox = new BoundingBox(this.engine);
-		this.addChild(this.hitbox);
-		this.hitbox.size.x = tilePosToEntityPosInt(1);
-		this.hitbox.size.y = tilePosToEntityPosInt(1);
-		this.hitbox.transform.position.x = this.hitbox.size.x / 2;
-		this.hitbox.transform.position.y = this.hitbox.size.y / 2;
+		this.hitbox.color = Color.red();
 
-		this.transform.position.x = tilePosToEntityPosInt(posX);
-		this.transform.position.y = tilePosToEntityPosInt(posY);
+		
+
+		this.transform.position.x = tilePosToEntityPosInt(entityPosToTilePosInt(sender.transform.position.x));
+		this.transform.position.y = tilePosToEntityPosInt(entityPosToTilePosInt(sender.transform.position.y));
+
+		this.transform.position.z = .1;
 	}
 
 	public update(dt:number){

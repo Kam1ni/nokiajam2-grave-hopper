@@ -1,6 +1,7 @@
 import { Tile } from "./tile";
 import { Engine, Vector3, AnimatedSprite, Vector2, approach } from "scrapy-engine";
 import { entityPosToTilePos, tilePosToEntityPos, entityPosToTilePosInt, tilePosToEntityPosInt } from "@/utils/position";
+import { Arrow } from "./arrow";
 
 const TERMINAL_VELOCITY = 50;
 export class TombStone extends Tile {
@@ -52,4 +53,5 @@ export class TombStone extends Tile {
 			tombstone.transform.position.y = tilePosToEntityPosInt(coord + 1);
 		}
 	}
+
 }

@@ -1,5 +1,5 @@
 import { Tile } from "./tile";
-import { Engine, AnimatedSprite } from "scrapy-engine";
+import { Engine, AnimatedSprite, Vector3 } from "scrapy-engine";
 import { Direction } from "@/utils/direction";
 import { tilePosToEntityPosInt, entityPosToTilePos } from "@/utils/position";
 import { degToRad } from "scrapy-engine";
@@ -40,6 +40,8 @@ export class ArrowDispenser extends Tile {
 		this.hitbox.size.y = tilePosToEntityPosInt(1);
 		this.hitbox.transform.position.x = this.hitbox.size.x/2;
 		this.hitbox.transform.position.y = this.hitbox.size.y/2;
+
+		this.transform.position.z = .2;
 	}
 
 	public fire(){
@@ -54,7 +56,7 @@ export class ArrowDispenser extends Tile {
 			coord.x -= 1;
 		}
 
-		let arrow = new Arrow(this.engine, this.direction, coord.x, coord.y);
+		let arrow = new Arrow(this.engine, this);
 		let level = this.getParent() as Level;
 		level.spawnArrow(arrow);
 	}
@@ -67,5 +69,13 @@ export class ArrowDispenser extends Tile {
 		}
 
 		super.update(dt);
+	}
+
+	
+	public onArrowCollision(arrow:Arrow, collision:Vector3):boolean{
+		if (arrow.sender == this){
+			return false;
+		}
+		return super.onArrowCollision(arrow, collision);
 	}
 }
